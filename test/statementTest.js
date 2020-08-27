@@ -156,3 +156,28 @@ test('should return owe 1730 and earn 47 credits given Customer BigCo has three 
                         'You earned 47 credits \n'
   t.is(result,expectResult );
 });
+test('should throw an exception given Customer BigCo has one unknown performance. ', t => {
+  const plays = {
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy1',
+    },
+  };
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'othello',
+        'audience': 40,
+      },
+    ],
+  };
+
+  try {
+    statement(invoice, plays);
+    t.fail();
+  }
+  catch (e) {
+    t.is(e.message, 'unknown type: tragedy1');
+  }
+});
