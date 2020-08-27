@@ -1,4 +1,4 @@
-const { createStatementData } = require("./createStatementData");
+const { createStatementData ,calculateAmount} = require("./createStatementData");
 
 function statement(invoice, plays) {
   let result = generateTxtResult(createStatementData(invoice, plays));
@@ -30,28 +30,6 @@ function formatUSD(thisAmount) {
   return format(thisAmount / 100)
 }
 
-
-function calculateAmount(play, perf) {
-  let thisAmount = 0;
-  switch (play.type) {
-    case 'tragedy':
-      thisAmount = 40000;
-      if (perf.audience > 30) {
-        thisAmount += 1000 * (perf.audience - 30);
-      }
-      break;
-    case 'comedy':
-      thisAmount = 30000;
-      if (perf.audience > 20) {
-        thisAmount += 10000 + 500 * (perf.audience - 20);
-      }
-      thisAmount += 300 * perf.audience;
-      break;
-    default:
-      throw new Error(`unknown type: ${play.type}`);
-  }
-  return thisAmount;
-}
 function htmlStatement(invoice, plays) {
   let result = generateHtmlResult(createStatementData(invoice, plays));
   return result;

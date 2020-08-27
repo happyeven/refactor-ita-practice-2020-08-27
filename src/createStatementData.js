@@ -56,4 +56,5 @@ function createStatementData(invoice, plays) {
 }
 module.exports = {
   createStatementData,
+  calculateAmount,
 };
