@@ -34,14 +34,7 @@ const plays = {
 };
 
 
-
-test('case 1 , bigco without performance ', t => {
-  t.true(true);
-  t.is(1, 1);
-  t.deepEqual({a: 1}, {a: 1});
-});
-
-test('case 1 , BigCo without performance ', t => {
+test('should_own_0_earn_0_when_statement_given_0_performances', t => {
   //given
   const invoice = {
     'customer': 'BigCo',
@@ -53,26 +46,45 @@ test('case 1 , BigCo without performance ', t => {
   'You earned 0 credits \n'
   t.is(expectResult, result);
 });
-test('case 2 , BigCo has one performance hamlet and audience is 30 ', t => {
+test('should return owed 400 and earn 0 credits when statement given BigCo has one performance hamlet and audience is 30 ', t => {
   //given
   const invoice = {
     'customer': 'BigCo',
     'performances':[
       {
         'playID': 'hamlet',
-        'audience': 55,
+        'audience': 30,
       }
     ],
   };
 //when
   const result = statement(invoice, plays);
   const expectResult = 'Statement for BigCo\n'+
-  ' Hamlet: $650.00 (55 seats)\n'+
-  'Amount owed is $650.00\n'+
-  'You earned 25 credits \n'
+  ' Hamlet: $400.00 (30 seats)\n'+
+  'Amount owed is $400.00\n'+
+  'You earned 0 credits \n'
   //then
   t.is(expectResult, result);
 });
-
+test('should return owed 410 and earn 1 credits when statement given BigCo has one performance hamlet and audience is 31 ', t => {
+  //given
+  const invoice = {
+    'customer': 'BigCo',
+    'performances':[
+      {
+        'playID': 'hamlet',
+        'audience': 31,
+      }
+    ],
+  };
+//when
+  const result = statement(invoice, plays);
+  const expectResult = 'Statement for BigCo\n'+
+  ' Hamlet: $410.00 (31 seats)\n'+
+  'Amount owed is $410.00\n'+
+  'You earned 1 credits \n'
+  //then
+  t.is(expectResult, result);
+});
 
 
