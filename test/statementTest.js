@@ -105,5 +105,54 @@ test('should return owe 360 and earn 4 credits  given Customer BigCo2 has one pe
                          'You earned 4 credits \n'
   t.is(result, expectResult);
 });
+test('should return owe 468 and earn 4 credits given Customer BigCo has one performance as-like and the audience is 21. ', t => {
+  const invoice = {
+    'customer': 'BigCo2',
+    'performances': [
+      {
+        'playID': 'as-like',
+        'audience': 21,
+      },
+    ],
+  };
 
+  const result = statement(invoice, plays);
+  const expectResult = 'Statement for BigCo2\n' +
+                         ' As You Like It: $468.00 (21 seats)\n' +
+                         'Amount owed is $468.00\n' +
+                         'You earned 4 credits \n'
+  t.is(result, expectResult);
+});
 
+test('should return owe 1730 and earn 47 credits given Customer BigCo has three performances. ' +
+  'Hamlet has 55 audiences. ' +
+  'As You Like Is has 35 audiences. ' +
+  'Othello has 40 audiences. ', t => {
+
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 55,
+      },
+      {
+        'playID': 'as-like',
+        'audience': 35,
+      },
+      {
+        'playID': 'othello',
+        'audience': 40,
+      },
+    ],
+  };
+
+  const result = statement(invoice, plays);
+  const expectResult ='Statement for BigCo\n' +
+                        ' Hamlet: $650.00 (55 seats)\n' +
+                        ' As You Like It: $580.00 (35 seats)\n' +
+                        ' Othello: $500.00 (40 seats)\n' +
+                        'Amount owed is $1,730.00\n' +
+                        'You earned 47 credits \n'
+  t.is(result,expectResult );
+});
