@@ -49,7 +49,8 @@ function createStatementData(invoice, plays) {
     totalAmount: totalAmount,
     volumeCredits: volumeCredits,
     performances: invoice.performances,
-    plays: plays
+    plays: plays,
+    customer: invoice.customer
   }
   return data
 }

@@ -1,42 +1,24 @@
+const {createStatementData} = require("./createStatementData");
+
 function statement (invoice, plays) {
-  let totalAmount = calculateTotalAmount(invoice, plays);
-  let volumeCredits = calculateVolumeCredits(invoice, plays);
-  let result = generateTxtResult(invoice, plays, totalAmount, volumeCredits);
+  let result = generateTxtResult(createStatementData(invoice, plays));
   return result; 
 }
 
-function generateTxtResult(invoice, plays, totalAmount, volumeCredits) {
-  let result = `Statement for ${invoice.customer}\n`;
-  result = generatePerformInfoTxtResult(invoice, plays, result);
-  result += `Amount owed is ${formatUSD(totalAmount / 100)}\n`;
-  result += `You earned ${volumeCredits} credits \n`;
+function generateTxtResult(data) {
+  let result = `Statement for ${data.customer}\n`;
+  result = generatePerformInfoTxtResult(data, result);
+  result += `Amount owed is ${formatUSD(data.totalAmount)}\n`;
+  result += `You earned ${data.volumeCredits} credits \n`;
   return result;
 }
 
-function calculateTotalAmount(invoice, plays) {
-  let totalAmount = 0;
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    totalAmount += calculateAmount(play, perf);
-  }
-  return totalAmount;
-}
-
-function generatePerformInfoTxtResult(invoice, plays, result) {
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    result += ` ${play.name}: ${formatUSD(calculateAmount(play, perf) / 100)} (${perf.audience} seats)\n`;
+function generatePerformInfoTxtResult(data, result) {
+  for (let perf of data.performances) {
+    const play = data.plays[perf.playID];
+    result += ` ${play.name}: ${formatUSD(calculateAmount(play, perf) )} (${perf.audience} seats)\n`;
   }
   return result;
-}
-
-function calculateVolumeCredits(invoice, plays) {
-  let volumeCredits = 0;
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    volumeCredits += calculateCredit(perf, play);
-  }
-  return volumeCredits;
 }
 
 function formatUSD(thisAmount){
@@ -45,16 +27,9 @@ function formatUSD(thisAmount){
     currency: 'USD',
     minimumFractionDigits: 2,
   }).format;
-  return format(thisAmount)
+  return format(thisAmount / 100)
 }
 
-function calculateCredit(perf, play) {
-  let credit = 0;
-  credit += Math.max(perf.audience - 30, 0);
-  if ('comedy' === play.type)
-    credit += Math.floor(perf.audience / 5);
-  return credit;
-}
 
 function calculateAmount(play, perf) {
   let thisAmount = 0;
