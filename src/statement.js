@@ -3,11 +3,10 @@ function statement (invoice, plays) {
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
  
+  result = getCurrentResult(invoice, plays, result);
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     const thisAmount = getAmount(play, perf);
-    //print line for this order
-    result += ` ${play.name}: ${formatUSD(thisAmount / 100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
   volumeCredits = getCurrentVolumeCredits(invoice, plays, volumeCredits);
@@ -16,6 +15,14 @@ function statement (invoice, plays) {
   return result;
 
   
+}
+
+function getCurrentResult(invoice, plays, result) {
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    result += ` ${play.name}: ${formatUSD(getAmount(play, perf) / 100)} (${perf.audience} seats)\n`;
+  }
+  return result;
 }
 
 function getCurrentVolumeCredits(invoice, plays, volumeCredits) {
