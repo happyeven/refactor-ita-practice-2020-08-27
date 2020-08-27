@@ -1,40 +1,40 @@
 function statement (invoice, plays) {
-  let totalAmount = getTotalAmount(invoice, plays);
-  let volumeCredits = getVolumeCredits(invoice, plays);
-  let result = getResult(invoice, plays, totalAmount, volumeCredits);
+  let totalAmount = calculateTotalAmount(invoice, plays);
+  let volumeCredits = calculateVolumeCredits(invoice, plays);
+  let result = generateTxtResult(invoice, plays, totalAmount, volumeCredits);
   return result; 
 }
 
-function getResult(invoice, plays, totalAmount, volumeCredits) {
+function generateTxtResult(invoice, plays, totalAmount, volumeCredits) {
   let result = `Statement for ${invoice.customer}\n`;
-  result = getCurrentResult(invoice, plays, result);
+  result = generatePerformInfoTxtResult(invoice, plays, result);
   result += `Amount owed is ${formatUSD(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits \n`;
   return result;
 }
 
-function getTotalAmount(invoice, plays) {
+function calculateTotalAmount(invoice, plays) {
   let totalAmount = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    totalAmount += getAmount(play, perf);
+    totalAmount += calculateAmount(play, perf);
   }
   return totalAmount;
 }
 
-function getCurrentResult(invoice, plays, result) {
+function generatePerformInfoTxtResult(invoice, plays, result) {
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    result += ` ${play.name}: ${formatUSD(getAmount(play, perf) / 100)} (${perf.audience} seats)\n`;
+    result += ` ${play.name}: ${formatUSD(calculateAmount(play, perf) / 100)} (${perf.audience} seats)\n`;
   }
   return result;
 }
 
-function getVolumeCredits(invoice, plays) {
+function calculateVolumeCredits(invoice, plays) {
   let volumeCredits = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    volumeCredits += getCredit(perf, play);
+    volumeCredits += calculateCredit(perf, play);
   }
   return volumeCredits;
 }
@@ -48,7 +48,7 @@ function formatUSD(thisAmount){
   return format(thisAmount)
 }
 
-function getCredit(perf, play) {
+function calculateCredit(perf, play) {
   let credit = 0;
   credit += Math.max(perf.audience - 30, 0);
   if ('comedy' === play.type)
@@ -56,7 +56,7 @@ function getCredit(perf, play) {
   return credit;
 }
 
-function getAmount(play, perf) {
+function calculateAmount(play, perf) {
   let thisAmount = 0;
   switch (play.type) {
     case 'tragedy':
