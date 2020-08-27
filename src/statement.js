@@ -1,7 +1,6 @@
 function statement (invoice, plays) {
-  let volumeCredits = 0;
-  totalAmount = getTotalAmount(invoice, plays);
-  volumeCredits = getCurrentVolumeCredits(invoice, plays, volumeCredits);
+  let totalAmount = getTotalAmount(invoice, plays);
+  let volumeCredits = getVolumeCredits(invoice, plays);
   let result = getResult(invoice, plays, totalAmount, volumeCredits);
   return result; 
 }
@@ -31,7 +30,8 @@ function getCurrentResult(invoice, plays, result) {
   return result;
 }
 
-function getCurrentVolumeCredits(invoice, plays, volumeCredits) {
+function getVolumeCredits(invoice, plays) {
+  let volumeCredits = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     volumeCredits += getCredit(perf, play);
