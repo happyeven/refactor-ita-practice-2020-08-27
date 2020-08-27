@@ -1,5 +1,5 @@
 const test = require('ava');
-const {statement} = require('../src/statement');
+const {statement , htmlStatement} = require('../src/statement');
 const invoice = {
   'customer': 'BigCo',
   'performances': [
@@ -183,39 +183,39 @@ test('should throw an exception given Customer BigCo has one unknown performance
 });
 
 
-// test('should return owe 1730 and earn 47 credits with html when generate html statement given Customer BigCo has three performances. ' +
-//   'Hamlet has 55 audiences. ' +
-//   'As You Like Is has 35 audiences. ' +
-//   'Othello has 40 audiences. ', t => {
+test('should return owe 1730 and earn 47 credits in html type when generate html statement given Customer BigCo has three performances. ' +
+  'Hamlet has 55 audiences. ' +
+  'As You Like Is has 35 audiences. ' +
+  'Othello has 40 audiences. ', t => {
 
-//   const invoice = {
-//     'customer': 'BigCo',
-//     'performances': [
-//       {
-//         'playID': 'hamlet',
-//         'audience': 55,
-//       },
-//       {
-//         'playID': 'as-like',
-//         'audience': 35,
-//       },
-//       {
-//         'playID': 'othello',
-//         'audience': 40,
-//       },
-//     ],
-//   };
+  const invoice = {
+    'customer': 'BigCo',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 55,
+      },
+      {
+        'playID': 'as-like',
+        'audience': 35,
+      },
+      {
+        'playID': 'othello',
+        'audience': 40,
+      },
+    ],
+  };
 
-//   const result = statement(invoice, plays);
-//   const expectResult ='<h1>Statement for BigCo</h1>\n' +
-//                             '<table>\n' +
-//                             '<tr><th>play</th><th>seats</th><th>cost</th></tr>' +
-//                             ' <tr><td>Hamlet</td><td>55</td><td>$650.00</td></tr>\n' +
-//                             ' <tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>\n' +
-//                             ' <tr><td>Othello</td><td>40</td><td>$500.00</td></tr>\n' +
-//                             '</table>\n' +
-//                             '<p>Amount owed is <em>$1,730.00</em></p>\n' +
-//                             '<p>You earned <em>47</em> credits</p>\n'
-//   t.is(result,expectResult );
-// });
+  const result = htmlStatement(invoice, plays);
+  const expectResult ='<h1>Statement for BigCo</h1>\n' +
+                            '<table>\n' +
+                            '<tr><th>play</th><th>seats</th><th>cost</th></tr> ' +
+                            '<tr><td>Hamlet</td><td>55</td><td>$650.00</td></tr>\n' +
+                            ' <tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>\n' +
+                            ' <tr><td>Othello</td><td>40</td><td>$500.00</td></tr>\n' +
+                            '</table>\n' +
+                            '<p>Amount owed is <em>$1,730.00</em></p>\n' +
+                            '<p>You earned <em>47</em> credits</p>\n'
+  t.is(result,expectResult );
+});
 
