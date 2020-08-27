@@ -87,4 +87,23 @@ test('should return owed 410 and earn 1 credits when statement given BigCo has o
   t.is(expectResult, result);
 });
 
+test('should return owe 360 and earn 4 credits  given Customer BigCo2 has one performance as-like and audience is 20. ', t => {
+  const invoice = {
+    'customer': 'BigCo2',
+    'performances': [
+      {
+        'playID': 'as-like',
+        'audience': 20,
+      },
+    ],
+  };
+
+  const result = statement(invoice, plays);
+  const expectResult = 'Statement for BigCo2\n' +
+                         ' As You Like It: $360.00 (20 seats)\n' +
+                         'Amount owed is $360.00\n' +
+                         'You earned 4 credits \n'
+  t.is(result, expectResult);
+});
+
 
